@@ -13,4 +13,8 @@ export const GlobalStyle = createGlobalStyle`
         min-height: 100vh;
         background-color: ${({theme}) => theme.colors.base.background};
     }
+
+    a {
+        text-decoration: none;
+    }
 `;

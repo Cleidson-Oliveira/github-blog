@@ -1,5 +1,7 @@
+import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { ThemeProvider } from "styled-components";
 import { Home } from "./pages/home";
+import { Post } from "./pages/post";
 import { GlobalStyle } from "./style/global";
 import { theme } from "./style/theme"
 
@@ -7,7 +9,12 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Home />
+      <Router>
+        <Routes>
+          <Route index element={<Home />} />
+          <Route path="post" element={<Post />} />
+        </Routes>
+      </Router>
       <GlobalStyle />
     </ThemeProvider>
   )
