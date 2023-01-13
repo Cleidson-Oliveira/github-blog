@@ -6,6 +6,7 @@ export const Container = styled.div`
     gap: 32px;
     width: 864px;
     margin: auto;
+    margin-bottom: 40px;
 `;
 
 export const PostListHeader = styled.header`
@@ -69,6 +70,7 @@ export const Card = styled.div`
 
     header {
         display: flex;
+        justify-content: space-between;
         gap: 16px;
 
         span {
@@ -79,21 +81,27 @@ export const Card = styled.div`
                 font-size: ${theme.fontSize.s};
             `}
         }
+        
+        & > a {
+            text-transform: capitalize;
+
+            ${({theme}) => css`
+                color: ${theme.colors.base.title};
+                font-size: ${theme.fontSize.xl};
+            `}
+        }
     }
 
-    p {
-        line-height: 160%;
+    div {
+        & > p, h1, h2, h3, h4, h5, h6, span, a {
 
-        ${({theme}) => css`
-            color: ${theme.colors.base.text};
-            font-size: ${theme.fontSize.m};
-        `}
-    }
+            line-height: 160%;
+            font-weight: normal;
 
-    h2 {
-        ${({theme}) => css`
-            color: ${theme.colors.base.title};
-            font-size: ${theme.fontSize.xl};
-        `}
+            ${({theme}) => css`
+                color: ${theme.colors.base.text};
+                font-size: ${theme.fontSize.m};
+            `}
+        }
     }
 `;

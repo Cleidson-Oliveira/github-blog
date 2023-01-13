@@ -1,8 +1,6 @@
 import styled, { css } from "styled-components";
 
 export const Container = styled.div`
-    position: relative;
-    top: -5.5rem;
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -16,6 +14,17 @@ export const Container = styled.div`
         display: flex;
         justify-content: space-between;
         align-items: center;
+
+        a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            align-items: flex-start;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: ${({theme}) => theme.colors.blue};
+            font-size: ${({theme}) => theme.fontSize.xs};
+        }
     }
 
     h2 {

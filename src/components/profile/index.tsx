@@ -1,8 +1,9 @@
-import { Container } from "./style";
-import { FaBuilding, FaExternalLinkAlt, FaGithub, FaUserFriends } from "react-icons/fa";
-import { Link } from "../link";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { FaBuilding, FaExternalLinkAlt, FaGithub, FaUserFriends } from "react-icons/fa";
+import { Link } from "../link";
+import { Container } from "./style";
+import { Loading } from "../loading";
 
 interface ProfileInfo {
     avatar_url: string | null,
@@ -14,23 +15,26 @@ interface ProfileInfo {
     followers: number | null,
 }
 
-export function Profile () {
+interface ProfileInfoProps {
+    profileInfo: ProfileInfo
+}
 
-    const [ profileInfo, setProfileInfo ] = useState<ProfileInfo | null>(null);
+export function Profile ({ profileInfo }: ProfileInfoProps) {
 
-    useEffect(() => {
-        axios.get("https://api.github.com/users/Cleidson-Oliveira")
-        .then((response) => setProfileInfo(response.data))
-    }, [])
-
-    return profileInfo ? (
+    return (
         <Container>
             {profileInfo.avatar_url && <img src={profileInfo.avatar_url} alt={`${profileInfo.name!}'s profile picture`} />}
             
             <div>
                 <header>
                     {profileInfo.name && <h2>{profileInfo.name}</h2>}
-                    {profileInfo.html_url && <Link href={profileInfo.html_url}>github <FaExternalLinkAlt /></Link>}
+                    {profileInfo.html_url && <Link 
+                        href={profileInfo.html_url} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        github <FaExternalLinkAlt />
+                    </Link>}
                 </header>
                 <div>
                     {profileInfo.bio && <p>{profileInfo.bio}</p>}
@@ -42,7 +46,5 @@ export function Profile () {
                 </footer>
             </div>
         </Container>
-    ) : (
-        <h1>loading...</h1>
     )
 }

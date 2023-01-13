@@ -1,42 +1,73 @@
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { filterPosts } from "../../utils/filterPosts";
+import { findCreationPostTime } from "../../utils/findCreationPostTime";
 import { Card, Container, PostListHeader } from "./style";
+import { Link } from "react-router-dom";
+import { EmptyList } from "../emptyList";
 
-interface PostListProps {}
+interface Post {
+    number: number,
+    title: string,
+    html_url: string,
+    comments: number,
+    created_at: string,
+    body: string,
+    user: {
+        login: string,
+    }
+}
 
-export function PostList (props: PostListProps) {
+interface PostListProps {
+    posts: Post[]
+}
+
+export function PostList ({ posts }: PostListProps) {
 
     const [ filter , setFilter ] = useState("");
-
-    const [ posts , setPosts ] = useState([
-        {
-            title: "JavaScript data types and data structures",
-            text: "Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in",
-        },
-        {
-            title: "JavaScript data types and data structures",
-            text: "Programming languages test all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in",
-        },
-        {
-            title: "JavaScript data types and data structures testing",
-            text: "Programming languages all have built-in data structures, but these often differ from one language to another. This article attempts to list the built-in data structures available in",
-        },
-    ])
 
     const filteredPosts = filter == "" 
     ? posts 
     : posts.filter(post => {
-        return (filterPosts(filter, post.text) || filterPosts(filter, post.title))
+        return (filterPosts(filter, post.body) || filterPosts(filter, post.title))
     })
 
-    console.log(filteredPosts)
+    const formatCreatePostTime = (createdAt: string) => {
+        const dayInHours = 24;
+        const monthInHours = dayInHours * 30;
+        const yearsInHours = dayInHours * 365;
+
+        const time = findCreationPostTime(createdAt);
+
+        if (time > yearsInHours) {
+            const timeInYears = Math.floor(time / yearsInHours);
+
+            return `Há ${timeInYears} ${timeInYears > 1 ? "anos" : "ano"}`;
+        }
+
+        if (time > monthInHours) {
+            const timeInMonths = Math.floor(time / monthInHours);
+
+            return `Há ${timeInMonths} ${timeInMonths > 1 ? "meses" : "mês"}`;
+        }
+        
+        if (time > dayInHours) {
+            const timeIndays = Math.floor(time / dayInHours);
+
+            return `Há ${timeIndays} ${timeIndays > 1 ? "dias" : "dia"}`;
+        }
+        
+        return `Há ${time} ${time > 1 ? "horas" : "hora"}`;
+    }
 
     return (
         <Container>
             <PostListHeader>
                 <div>
                     <h2>Publicações</h2>
-                    <span>6 publicações</span>
+                    { filteredPosts && 
+                        <span>{filteredPosts.length} {filteredPosts.length != 1 ? "publicações" : "publicação"}</span>
+                    }
                 </div>
                 <input
                     type="text"
@@ -45,15 +76,18 @@ export function PostList (props: PostListProps) {
                     onChange={(e) => setFilter(e.target.value)}
                 />
             </PostListHeader>
-            {(!!filteredPosts) && filteredPosts.map((post, index) => (
-                <Card key={index}>
+            {(!!filteredPosts) && filteredPosts.map(post => (
+                <Card key={post.number}>
                     <header>
-                        <h2>{post?.title}</h2>
-                        <span>Há 1 hora</span>
+                        <Link to={"/post/" + post.number}>{post?.title}</Link>
+                        <span>{formatCreatePostTime(post.created_at)}</span>
                     </header>
-                    <p>{post?.text}</p>
+                    <div>
+                        <ReactMarkdown>{post?.body.slice(0, 200) + " ..."}</ReactMarkdown>
+                    </div>
                 </Card>
             ))}
+            {filteredPosts.length === 0 && <EmptyList />}
         </Container>
     )
 }

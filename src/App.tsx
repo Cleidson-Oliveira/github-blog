@@ -12,7 +12,9 @@ function App() {
       <Router>
         <Routes>
           <Route index element={<Home />} />
-          <Route path="post" element={<Post />} />
+          <Route path="post">
+            <Route path=":postId" element={<Post />} />            
+          </Route>
         </Routes>
       </Router>
       <GlobalStyle />
