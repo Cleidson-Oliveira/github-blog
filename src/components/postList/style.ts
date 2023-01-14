@@ -7,6 +7,15 @@ export const Container = styled.div`
     width: 864px;
     margin: auto;
     margin-bottom: 40px;
+
+    @media screen and (max-width: 600px) {
+        width: 90%;
+        gap: 1rem;
+
+        & > header {
+            margin-bottom: 10px;
+        }
+    }
 `;
 
 export const PostListHeader = styled.header`

@@ -54,4 +54,13 @@ export const Container = styled.div`
             color: ${({theme}) => theme.colors.base.label};
         }
     }
+
+    @media screen and (max-width: 600px) {
+        width: 90%;
+        gap: 12px;
+
+        h2 {
+            margin: 0px;
+        }
+    }
 `

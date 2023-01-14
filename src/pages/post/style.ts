@@ -28,4 +28,7 @@ export const PostContent = styled.div`
         margin-bottom: 8px;
     }
 
+    @media screen and (max-width: 600px){
+        width: unset;
+    }
 `;

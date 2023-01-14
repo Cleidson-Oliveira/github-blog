@@ -57,4 +57,25 @@ export const Container = styled.div`
             color: ${({theme}) => theme.colors.base.label};
         }
     }
+
+    @media screen and (max-width: 600px) {
+        flex-direction: column;
+        align-items: center;
+        width: 90%;
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        h2 {
+            margin: 0;
+        }
+
+        footer {
+            position: unset;
+            gap: 5px 20px;
+        }
+    }
 `;
